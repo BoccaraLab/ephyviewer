@@ -229,18 +229,20 @@ class TimeFreqWorker(QT.QObject):
         wt = scipy.fftpack.fftshift(wt_tmp,axes=[0])
         wt = np.abs(wt).astype('float32')
         
-        wt = np.log10(wt)**2
+        # Convert to dB
+        wt = 10*np.log10(wt)
+        
+        if left_pad>0:
+            wt = wt[:-left_pad]
         
         # smoothing        
         sigma = smoothing_length * sub_sample_rate
-        wt = gaussian_filter(wt, sigma=[sigma, 0], mode='constant')
+        wt = gaussian_filter(wt, sigma=[sigma, 0], mode='reflect')
         
         # zscoring
         if zscore:
             wt = scipy.stats.zscore(wt, axis=1)
         
-        if left_pad>0:
-            wt = wt[:-left_pad]
         wt_map = wt[:plot_length]
         #~ wt_map =wt
         #~ print('wt_map', wt_map.shape)
