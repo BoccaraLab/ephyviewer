@@ -32,7 +32,7 @@ default_params = [
     {'name': 'view_mode', 'type': 'list', 'value':'stacked', 'limits' : ['stacked', 'flat']},
     {'name': 'keys_as_ticks', 'type': 'bool', 'value': True},
     {'name': 'undo_history_size', 'type': 'int', 'value': 500, 'limits': (1, np.inf)},
-
+    {'name': 'tocurate_mode', 'type': 'bool', 'value': True},
     #~ {'name': 'display_labels', 'type': 'bool', 'value': True},
     ]
 
@@ -1066,19 +1066,23 @@ class EpochEncoder(ViewerBase):
         if ep_id is None:
             return
         
-        # Validate if ep_id exists in the mapping
-        if ep_id not in self.source.id_to_ind:
-            raise ValueError(f"Epoch ID {ep_id} not found.")
-        
-        ind = self.source.id_to_ind[ep_id]
+        if self.params['tocurate_mode']:
+            # Validate if ep_id exists in the mapping
+            if ep_id not in self.source.id_to_ind:
+                raise ValueError(f"Epoch ID {ep_id} not found.")
+            
+            ind = self.source.id_to_ind[ep_id]
 
-        if self.source.ep_durations[ind] <= 2.5:
-            return True
-        
-        elif (ind > 0 
-            and self.source.ep_labels[ind] == 'REM' 
-            and self.source.ep_labels[ind-1] == 'WAKE'):
-            return True
+            if self.source.ep_durations[ind] <= 2.5:
+                return True
+            
+            elif (ind > 0 
+                and self.source.ep_labels[ind] == 'REM' 
+                and self.source.ep_labels[ind-1] == 'WAKE'):
+                return True
+            
+            else:
+                return False
         
         else:
             return False
