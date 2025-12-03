@@ -99,7 +99,7 @@ class NavigationToolBar(QT.QWidget) :
             play_pause_shortcut.setKey(QT.QKeySequence(' '))
             play_pause_shortcut.activated.connect(self.on_play_pause_shortcut)
 
-        self.steps = ['60 s', '10 s', '2.5 s', '1 s', '100 ms', '50 ms', '5 ms', '1 ms', '200 us']
+        self.steps = ['60 s', '10 s', '4 s', '2.5 s', '1 s', '100 ms', '50 ms', '5 ms', '1 ms', '200 us']
 
         if show_step:
             but = QT.QPushButton('<')
