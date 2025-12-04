@@ -138,7 +138,7 @@ class EpochEncoder(ViewerBase):
 
         self.initialize_plot()
 
-        self.on_range_visibility_changed(refresh=False)
+        # self.on_range_visibility_changed(refresh=False)
 
 
 
@@ -222,60 +222,60 @@ class EpochEncoder(ViewerBase):
         h.setSpacing(5)
         self.controls.setLayout(h)
 
-        # Range box
+        # # Range box
 
-        self.range_group_box = QT.QGroupBox('Time &range selector', checkable=True, checked=False)
-        self.range_group_box.clicked.connect(self.on_range_visibility_changed)
-        h.addWidget(self.range_group_box)
+        # self.range_group_box = QT.QGroupBox('Time &range selector', checkable=True, checked=False)
+        # self.range_group_box.clicked.connect(self.on_range_visibility_changed)
+        # h.addWidget(self.range_group_box)
 
-        range_group_box_layout = QT.QGridLayout()
-        range_group_box_layout.setSpacing(0)
-        self.range_group_box.setLayout(range_group_box_layout)
+        # range_group_box_layout = QT.QGridLayout()
+        # range_group_box_layout.setSpacing(0)
+        # self.range_group_box.setLayout(range_group_box_layout)
 
-        range_shortcut = QT.QShortcut(self)
-        range_shortcut.setKey(QT.QKeySequence('r'))
-        range_shortcut.activated.connect(self.range_group_toggle)
-        self.range_group_box.setToolTip('Toggle with shortcut: r')
+        # range_shortcut = QT.QShortcut(self)
+        # range_shortcut.setKey(QT.QKeySequence('r'))
+        # range_shortcut.activated.connect(self.range_group_toggle)
+        # self.range_group_box.setToolTip('Toggle with shortcut: r')
 
-        spinboxs = []
-        buts = []
-        for i, but_text in enumerate(['Set start >', 'Set stop >']):
-            but = QT.QPushButton(but_text)
-            buts.append(but)
-            range_group_box_layout.addWidget(but, i, 0)
-            spinbox = pg.SpinBox(value=float(i)*2.5, decimals = 8, bounds = (-np.inf, np.inf),step = 0.05, siPrefix=False, int=False)
-            if 'compactHeight' in spinbox.opts:  # pyqtgraph >= 0.11.0
-                spinbox.setOpts(compactHeight=False)
-            range_group_box_layout.addWidget(spinbox, i, 1)
-            spinbox.setSizePolicy(QT.QSizePolicy.Preferred, QT.QSizePolicy.Preferred, )
-            spinbox.valueChanged.connect(self.on_spin_limit_changed)
-            spinboxs.append(spinbox)
-        self.spin_limit1, self.spin_limit2 = spinboxs
-        buts[0].clicked.connect(self.set_limit1)
-        buts[1].clicked.connect(self.set_limit2)
+        # spinboxs = []
+        # buts = []
+        # for i, but_text in enumerate(['Set start >', 'Set stop >']):
+        #     but = QT.QPushButton(but_text)
+        #     buts.append(but)
+        #     range_group_box_layout.addWidget(but, i, 0)
+        #     spinbox = pg.SpinBox(value=float(i)*2.5, decimals = 8, bounds = (-np.inf, np.inf),step = 0.05, siPrefix=False, int=False)
+        #     if 'compactHeight' in spinbox.opts:  # pyqtgraph >= 0.11.0
+        #         spinbox.setOpts(compactHeight=False)
+        #     range_group_box_layout.addWidget(spinbox, i, 1)
+        #     spinbox.setSizePolicy(QT.QSizePolicy.Preferred, QT.QSizePolicy.Preferred, )
+        #     spinbox.valueChanged.connect(self.on_spin_limit_changed)
+        #     spinboxs.append(spinbox)
+        # self.spin_limit1, self.spin_limit2 = spinboxs
+        # buts[0].clicked.connect(self.set_limit1)
+        # buts[1].clicked.connect(self.set_limit2)
 
-        limit1_shortcut = QT.QShortcut(self)
-        limit1_shortcut.setKey(QT.QKeySequence('['))
-        limit1_shortcut.activated.connect(buts[0].click)
-        buts[0].setToolTip('Set start with shortcut: [')
+        # limit1_shortcut = QT.QShortcut(self)
+        # limit1_shortcut.setKey(QT.QKeySequence('['))
+        # limit1_shortcut.activated.connect(buts[0].click)
+        # buts[0].setToolTip('Set start with shortcut: [')
 
-        limit2_shortcut = QT.QShortcut(self)
-        limit2_shortcut.setKey(QT.QKeySequence(']'))
-        limit2_shortcut.activated.connect(buts[1].click)
-        buts[1].setToolTip('Set stop with shortcut: ]')
+        # limit2_shortcut = QT.QShortcut(self)
+        # limit2_shortcut.setKey(QT.QKeySequence(']'))
+        # limit2_shortcut.activated.connect(buts[1].click)
+        # buts[1].setToolTip('Set stop with shortcut: ]')
 
-        self.combo_labels = QT.QComboBox()
-        self.combo_labels.addItems(self.source.possible_labels)
-        range_group_box_layout.addWidget(self.combo_labels, 2, 0, 1, 2)
+        # self.combo_labels = QT.QComboBox()
+        # self.combo_labels.addItems(self.source.possible_labels)
+        # range_group_box_layout.addWidget(self.combo_labels, 2, 0, 1, 2)
 
-        self.but_apply_region = QT.PushButton('Insert within range')
-        range_group_box_layout.addWidget(self.but_apply_region, 3, 0, 1, 2)
-        self.but_apply_region.clicked.connect(self.apply_region)
-        self.but_apply_region.setToolTip('Insert with customizable shortcuts (see options)')
+        # self.but_apply_region = QT.PushButton('Insert within range')
+        # range_group_box_layout.addWidget(self.but_apply_region, 3, 0, 1, 2)
+        # self.but_apply_region.clicked.connect(self.apply_region)
+        # self.but_apply_region.setToolTip('Insert with customizable shortcuts (see options)')
 
-        self.but_del_region = QT.PushButton('Clear within range')
-        range_group_box_layout.addWidget(self.but_del_region, 4, 0, 1, 2)
-        self.but_del_region.clicked.connect(self.delete_region)
+        # self.but_del_region = QT.PushButton('Clear within range')
+        # range_group_box_layout.addWidget(self.but_del_region, 4, 0, 1, 2)
+        # self.but_del_region.clicked.connect(self.delete_region)
 
         # Table
 
@@ -382,7 +382,7 @@ class EpochEncoder(ViewerBase):
     def initialize_plot(self):
         self.region = pg.LinearRegionItem(brush='#FF00FF20')
         self.region.setZValue(10)
-        self.region.setRegion((self.spin_limit1.value(), self.spin_limit2.value()))
+        # self.region.setRegion((self.spin_limit1.value(), self.spin_limit2.value()))
         self.plot.addItem(self.region, ignoreBounds=True)
         self.region.sigRegionChanged.connect(self.on_region_changed)
 
@@ -563,15 +563,15 @@ class EpochEncoder(ViewerBase):
         else:
             self.plot.getAxis('left').setTicks([])
 
-        if self.range_group_box.isChecked():
-            current_region = self.region.getRegion()
-            region_width = current_region[1] - current_region[0]
+        # if self.range_group_box.isChecked():
+        #     current_region = self.region.getRegion()
+        #     region_width = current_region[1] - current_region[0]
 
-            self.region.setRegion((self.t, self.t + region_width))
+        #     self.region.setRegion((self.t, self.t + region_width))
 
-            self.region.show()
-        else:
-            self.region.hide()
+        #     self.region.show()
+        # else:
+        #     self.region.hide()
 
         self.vline.setPos(self.t)
         self.plot.setXRange( t_start, t_stop, padding = 0.0)
@@ -582,18 +582,18 @@ class EpochEncoder(ViewerBase):
 
     def on_label_shortcut(self, label, modifier_used):
 
-        range_selection_is_enabled = self.range_group_box.isChecked()
+        # range_selection_is_enabled = self.range_group_box.isChecked()
 
-        if range_selection_is_enabled:
-            # use selection for start and end of new epoch
-            t_start = self.spin_limit1.value()
-            t_stop = self.spin_limit2.value()
-            duration = t_stop - t_start
-        else:
-            # use current time and step size to get end of new epoch
-            duration = self.params['new_epoch_step']
-            t_start = self.t
-            t_stop = self.t + duration
+        # if range_selection_is_enabled:
+        #     # use selection for start and end of new epoch
+        #     t_start = self.spin_limit1.value()
+        #     t_stop = self.spin_limit2.value()
+        #     duration = t_stop - t_start
+        # else:
+        # use current time and step size to get end of new epoch
+        duration = self.params['new_epoch_step']
+        t_start = self.t
+        t_stop = self.t + duration
 
         # delete existing epochs in the region where the new epoch will be inserted
         if (self.params['exclusive_mode'] and not modifier_used) or (not self.params['exclusive_mode'] and modifier_used):
@@ -875,6 +875,12 @@ class EpochEncoder(ViewerBase):
             return
 
     def on_table_cell_change(self, row, col):
+        # disable editing of start, stop, and duration from the table
+        # to enforce fixed epoch durations for manual scoring.
+        if col in [START_COL, STOP_COL, DURATION_COL]:
+            self.refresh_table()
+            return
+
         line_edit = self.table_widget.cellWidget(row, col)
         if not isinstance(line_edit, QT.QLineEdit): return
         new_text = line_edit.text()
@@ -959,11 +965,22 @@ class EpochEncoder(ViewerBase):
         # change epoch label
         self.source.ep_labels[ind] = new_label
 
+        # Enforce grid alignment for manual scoring
+        scoring_epoch_duration = self.params['new_epoch_step']
+        if scoring_epoch_duration > 0:
+            t_start = self.source.ep_times[ind]
+            
+            # Snap t_start to the grid
+            new_t_start = np.round(np.floor(t_start / scoring_epoch_duration) * scoring_epoch_duration, 6)
+            
+            self.source.ep_times[ind] = new_t_start
+            self.source.ep_durations[ind] = scoring_epoch_duration
+
         self.append_history()
 
-        # update plot
+        # update plot and table
         self.refresh()
-        # refresh_table is not called to avoid deselecting table cell
+        self.refresh_table()
 
     def delete_selected_epoch(self, ind=None):
         if self.table_widget.rowCount()==0:

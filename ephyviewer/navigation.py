@@ -99,7 +99,7 @@ class NavigationToolBar(QT.QWidget) :
             play_pause_shortcut.setKey(QT.QKeySequence(' '))
             play_pause_shortcut.activated.connect(self.on_play_pause_shortcut)
 
-        self.steps = ['60 s', '10 s', '4 s', '2.5 s', '1 s', '100 ms', '50 ms', '5 ms', '1 ms', '200 us']
+        self.steps = ['4 s']
 
         if show_step:
             but = QT.QPushButton('<')
@@ -108,7 +108,7 @@ class NavigationToolBar(QT.QWidget) :
 
             self.combo_step = QT.QComboBox()
             self.combo_step.addItems(self.steps)
-            self.combo_step.setCurrentIndex(2)
+            self.combo_step.setCurrentIndex(0)
             h.addWidget(self.combo_step)
 
             self.on_change_step(None)
@@ -140,7 +140,7 @@ class NavigationToolBar(QT.QWidget) :
 
         if show_spinbox:
             h.addWidget(QT.QLabel('Time (s):'))
-            self.spinbox_time =pg.SpinBox(decimals = 8, bounds = (-np.inf, np.inf),step = 0.05, siPrefix=False, suffix='', int=False)
+            self.spinbox_time =pg.SpinBox(decimals = 8, bounds = (-np.inf, np.inf),step = 4., siPrefix=False, suffix='', int=False)
             if 'compactHeight' in self.spinbox_time.opts:  # pyqtgraph >= 0.11.0
                 self.spinbox_time.setOpts(compactHeight=False)
             h.addWidget(self.spinbox_time)
@@ -252,13 +252,16 @@ class NavigationToolBar(QT.QWidget) :
         self.seek(t, refresh_scroll = False)
 
     def on_spinbox_time_changed(self, val):
-        self.seek(val, refresh_spinbox = False)
+        self.seek(val, refresh_spinbox = True)
 
     #~ def on_spinbox_xsize_changed(self, val):
         #~ print('xsize', val)
 
     def seek(self , t, refresh_scroll = True, refresh_spinbox = True, emit=True):
-        self.t = t
+         # Snap t_start to the grid
+        scoring_epoch_duration = 4.
+        new_t = np.round(np.floor(t / scoring_epoch_duration) * scoring_epoch_duration, 6)
+        self.t = new_t
         if (self.t<self.t_start):
             self.t = self.t_start
         if (self.t>self.t_stop):
@@ -275,7 +278,7 @@ class NavigationToolBar(QT.QWidget) :
 
         if refresh_spinbox and self.show_spinbox:
             self.spinbox_time.valueChanged.disconnect(self.on_spinbox_time_changed)
-            self.spinbox_time.setValue(t)
+            self.spinbox_time.setValue(new_t)
             self.spinbox_time.valueChanged.connect(self.on_spinbox_time_changed)
 
         if self.show_label_datetime:
